@@ -1,12 +1,12 @@
-// index.js
-
+// server.js
 /**
  * Required External Modules
  */
 const express = require("express")
 const cors = require("cors")
 const fs = require("fs")
-const users = require("./users")
+const bcrypt = require('bcrypt');
+
 /**
  * App Variables
  */
@@ -24,42 +24,85 @@ app.use(express.json())
  */
 app.get("/", function (req, res) {
   res.send("Hello World")
-  //res.render('login');
+  
 })
 
 app.get("/register", function (req, res) {
   res.send("Hello World")
-  //   res.render('register');
+  
 })
 
-app.post("/register", function (req, res) {
-  const user = {
-    name: req.body.name.toString(),
-    password: req.body.password.toString(),
-  }
+let users = [];
+let hash;
+app.get("/login", async (req, res) => {
+})
 
-  //   let userArray = [];
-  //   userArray.push(user);
+app.post("/login", async function (req, res) {
+    
+    // const hashedPassword = await bcrypt.hash(req.body.password.toString(), 10)
+    // const enteredUser = {
+    //   name: req.body.name.toString(),
+    //   password: hashedPassword,
+    // }
+    
+    fs.readFile("users.js", (error, data) => {
+      if (error) {
+          console.log(error)
+      }
+      users = JSON.parse(data);
+      // console.log(users.length)
+      for (let index = 0; index < users.length; index ++){
+          let user = users[index];
+          for(let pw in user){
+              if(user.hasOwnProperty(pw)){
 
-  let existing
+                  hash = user.password;
+                  
+              }
+              bcrypt.compare(user.password, hash, (error, result) => {
+                console.log(user.password)
+                console.log(hash)
+                console.log(error)
+                
+                
+              })
 
-  fs.readFile("users.js", (error, data) => {
+          }
+      }
+  })
+})
+
+app.post("/register", async function (req, res) {
+  // Generate salt for bcrypt
+  try {
+      const hashedPassword = await bcrypt.hash(req.body.password.toString(), 10)
+      const user = {
+        name: req.body.name.toString(),
+        password: hashedPassword,
+      }
+      hash = hashedPassword;
+      //   Read file to get existing users
+    fs.readFile("users.js", (error, data) => {
     if (error) {
       console.log(error)
     }
     // Convert JSON to object
-    existing = JSON.parse(data)
+    users = JSON.parse(data)
+
     // Add new JSON object
-    existing.push(user)
-    // console.log(existing)
+    users.push(user)
+    
     // Write to file
-    fs.writeFile("users.js", JSON.stringify(existing), (error) => {
+    fs.writeFile("users.js", JSON.stringify(users), (error) => {
       if (error) {
         console.log(error)
       }
     })
   })
-  //   console.log(existing)
+  } catch (error) {
+      res.statusCode(500)
+  }
+  
 })
 
 /**

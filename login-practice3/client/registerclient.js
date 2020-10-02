@@ -1,5 +1,5 @@
-const form = document.querySelector('form');
-const SERVER_API_URL = 'http://localhost:3000/register';
+const form = document.querySelector('.registerForm');
+const REGISTER_SERVER_API_URL = 'http://localhost:3000/register';
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -13,7 +13,7 @@ form.addEventListener('submit', (event) => {
   console.log(user);
 
   // POST data to server
-  fetch(SERVER_API_URL, {
+  fetch(REGISTER_SERVER_API_URL, {
     method: 'POST',
     body: JSON.stringify(user),
     headers: {
@@ -21,3 +21,8 @@ form.addEventListener('submit', (event) => {
     },
   });
 });
+
+
+  
+
+

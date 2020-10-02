@@ -1,3 +1,1 @@
-[{"name":"Kev","password":"Tran"},
-{"name":"blaise","password":"sebagabo"},
-{"name":"turtle","password":"poop"}]
+[{"name":"kevintran","password":"$2b$10$xqxDLU/hbDXYn2dFVuera.a13FzhDk9yIS33C1TaVhWcHlcmXU4fi"}, {}]

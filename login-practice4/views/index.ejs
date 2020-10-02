@@ -1,0 +1,5 @@
+<h1>Hi <%= name %></h1>
+<!-- ?_method=DELETE basically overrides the app.post with our app.delete function -->
+<form action="/logout?_method=DELETE" method="POST">
+  <button type="submit">Logout</button>
+</form>
